@@ -12,8 +12,8 @@ Library and command line application for [Collatz conjecture](https://en.wikiped
 
 ##### print every step to 1 from a given number
 
-`collatz steps <number> [--index]`
+`collatz iterate <number> [--index]`
 
 `--index`
 - default: false
-- Prefix each step with the step count for the given number
+- Prefix each iteration with the current iteration count
