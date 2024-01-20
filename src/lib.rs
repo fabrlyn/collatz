@@ -8,7 +8,7 @@ use std::ops::{Div, Mul, Rem};
 // TODO: Check of-by-one error regarding enumeration and counting - starting at 1 counts as 0 steps
 
 /// A valid number within the Collatz conjecture - any positive integer
-#[derive(Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub struct Number(u64);
 
 impl Number {
