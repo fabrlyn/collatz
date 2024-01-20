@@ -12,6 +12,7 @@ use std::ops::{Div, Mul, Rem};
 pub struct Number(u64);
 
 impl Number {
+    /// Create a new [Number]. Must be a postive integer.
     pub fn new(number: u64) -> Option<Self> {
         if number == 0 {
             None
@@ -20,6 +21,7 @@ impl Number {
         }
     }
 
+    /// Get the value of the [Number]
     pub fn value(&self) -> u64 {
         self.0
     }
