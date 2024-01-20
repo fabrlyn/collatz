@@ -1,3 +1,5 @@
+use std::ops::{Div, Mul, Rem};
+
 // TODO: Handle overflow of numbers
 // TODO: Handle different archs
 // TODO: cli command for count
@@ -5,55 +7,96 @@
 // TODO: extend cli command for iterate with enumeration
 // TODO: Check of-by-one error regarding enumeration and counting - starting at 1 counts as 0 steps
 
-struct Collatz {
-    number: Option<Number>,
-}
-
+/// A valid number within the Collatz conjecture - any positive integer
 #[derive(Clone, Copy)]
-struct Number(u64);
+pub struct Number(u64);
 
 impl Number {
-    fn new(number: u64) -> Option<Self> {
+    pub fn new(number: u64) -> Option<Self> {
         if number == 0 {
             None
         } else {
             Some(Self(number))
         }
     }
+
+    pub fn value(&self) -> u64 {
+        self.0
+    }
+}
+
+impl PartialEq<u64> for Number {
+    fn eq(&self, other: &u64) -> bool {
+        self.0 == *other
+    }
+}
+
+impl Rem<u64> for Number {
+    type Output = u64;
+
+    fn rem(self, rhs: u64) -> Self::Output {
+        self.0 % rhs
+    }
+}
+
+impl Div<u64> for Number {
+    type Output = u64;
+
+    fn div(self, rhs: u64) -> Self::Output {
+        self.0 / rhs
+    }
+}
+
+impl Mul<u64> for Number {
+    type Output = u64;
+
+    fn mul(self, rhs: u64) -> Self::Output {
+        self.0 * rhs
+    }
+}
+
+impl TryFrom<u64> for Number {
+    type Error = ();
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        Number::new(value).ok_or(())
+    }
+}
+
+struct Collatz {
+    number: Option<Number>,
 }
 
 impl Iterator for Collatz {
     type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let current = self.number?.0;
-        self.number = next(current).and_then(Number::new);
+        let current = self.number?;
+        self.number = next(current);
 
-        Some(current)
+        Some(current.0)
     }
 }
 
-pub fn iterate(number: u64) -> Option<impl Iterator<Item = u64>> {
-    Some(Collatz {
-        number: Some(Number::new(number)?),
-    })
+pub fn iterate(number: Number) -> impl Iterator<Item = u64> {
+    Collatz {
+        number: Some(number),
+    }
 }
 
-pub fn next(number: u64) -> Option<u64> {
-    let number = Number::new(number)?;
-
-    if number.0 == 1 {
+pub fn next(number: Number) -> Option<Number> {
+    if number == 1 {
         return None;
     }
 
-    if number.0 % 2 == 0 {
-        Some(number.0 / 2)
+    if number % 2 == 0 {
+        Number::new(number / 2)
     } else {
-        Some((number.0 * 3) + 1)
+        Number::new((number * 3) + 1)
     }
 }
 
-pub fn count(number: u64) -> u64 {
+pub fn count(number: Number) -> u64 {
     let mut count = 0;
     let mut next_number = number;
 
