@@ -1,3 +1,9 @@
+// TODO: Handle overflow of numbers
+// TODO: Handle different archs
+// TODO: cli command for count
+// TODO: cli command for iterate
+// TODO: extend cli command for iterate with enumeration
+
 struct Collatz {
     number: Option<Number>,
 }
