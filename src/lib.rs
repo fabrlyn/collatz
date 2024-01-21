@@ -6,6 +6,7 @@ use std::ops::{Div, Mul, Rem};
 // TODO: cli command for iterate
 // TODO: extend cli command for iterate with enumeration
 // TODO: Check of-by-one error regarding enumeration and counting - starting at 1 counts as 0 steps
+// TODO: Use `NonZeroU64` instead of `Number`
 
 /// A valid number within the Collatz conjecture - any positive integer
 #[derive(Debug, Clone, Copy)]
