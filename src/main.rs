@@ -1,14 +1,6 @@
-use std::str::FromStr;
+use std::num::NonZeroU64;
 
 use clap::{command, Args, Parser, Subcommand};
-use collatz::Number;
-
-fn parse_number(s: &str) -> Result<Number, String> {
-    u64::from_str(s)
-        .ok()
-        .and_then(|number| Number::new(number))
-        .ok_or("Not a valid number, must be a positive integer".to_string())
-}
 
 #[derive(Debug, Parser)]
 #[command(name = "collatz")]
@@ -25,8 +17,7 @@ enum Command {
 
 #[derive(Debug, Args)]
 struct Iterate {
-    #[arg(value_parser = parse_number)]
-    number: Number,
+    number: NonZeroU64,
 }
 
 fn iterate(args: Iterate) {
