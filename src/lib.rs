@@ -17,20 +17,22 @@ impl Number {
     }
 
     /// Get the value of the [Number]
-    pub fn value(&self) -> BigUint {
-        self.0.clone()
+    pub fn value(self) -> BigUint {
+        self.0
     }
 }
 
 pub fn next(number: Number) -> Option<Number> {
-    if number.0.is_one() {
+    let number = number.value();
+
+    if number.is_one() {
         return None;
     }
 
-    let next = if number.0.is_even() {
-        number.0.div(2u8)
+    let next = if number.is_even() {
+        number.div(2u8)
     } else {
-        (number.0.mul(3u8)).add(1u8)
+        (number.mul(3u8)).add(1u8)
     };
 
     Number::new(next)
@@ -46,8 +48,7 @@ impl Iterator for Collatz {
     fn next(&mut self) -> Option<Self::Item> {
         let current = self.number.take()?;
         self.number = next(current.clone());
-
-        Some(current.0)
+        Some(current.value())
     }
 }
 
