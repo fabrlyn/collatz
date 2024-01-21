@@ -4,5 +4,4 @@ Library and command line application for [Collatz conjecture](https://en.wikiped
 
 # todo
 
-- Handle overflow of numbers
 - Help texts for commands and flags
