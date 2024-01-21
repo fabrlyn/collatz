@@ -1,4 +1,7 @@
-use std::num::NonZeroU64;
+use std::{
+    num::NonZeroU64,
+    ops::{Div, Mul, Add},
+};
 
 use num::{Integer, One};
 
@@ -7,11 +10,13 @@ pub fn next(number: NonZeroU64) -> Option<NonZeroU64> {
         return None;
     }
 
-    if number.get().is_even() {
-        NonZeroU64::new(number.get() / 2)
+    let next = if number.get().is_even() {
+        number.get().div(2)
     } else {
-        NonZeroU64::new((number.get() * 3) + 1)
-    }
+        (number.get().mul(3)).add(1)
+    };
+
+    NonZeroU64::new(next)
 }
 
 struct Collatz {
