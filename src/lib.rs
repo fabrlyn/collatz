@@ -1,11 +1,13 @@
 use std::num::NonZeroU64;
 
+use num::{Integer, One};
+
 pub fn next(number: NonZeroU64) -> Option<NonZeroU64> {
-    if number.get() == 1 {
+    if number.get().is_one() {
         return None;
     }
 
-    if number.get() % 2 == 0 {
+    if number.get().is_even() {
         NonZeroU64::new(number.get() / 2)
     } else {
         NonZeroU64::new((number.get() * 3) + 1)
