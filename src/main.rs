@@ -1,6 +1,15 @@
-use std::{num::NonZeroU64, ops::Sub};
+use std::{ops::Sub, str::FromStr};
 
 use clap::{command, Args, Parser, Subcommand};
+use collatz::Number;
+use num::BigUint;
+
+fn parse_number(s: &str) -> Result<Number, String> {
+    BigUint::from_str(s)
+        .ok()
+        .and_then(|number| Number::new(number))
+        .ok_or("Not a valid number, must be a positive integer".to_string())
+}
 
 #[derive(Debug, Parser)]
 #[command(name = "collatz")]
@@ -18,14 +27,16 @@ enum Command {
 
 #[derive(Debug, Args)]
 struct Count {
-    number: NonZeroU64,
+    #[arg(value_parser = parse_number)]
+    number: Number,
 }
 
 #[derive(Debug, Args)]
 struct Steps {
-    number: NonZeroU64,
     #[arg(value_name = "enumerate", long = "enumerate")]
     enumerate: bool,
+    #[arg(value_parser = parse_number)]
+    number: Number,
 }
 
 fn count(args: Count) {

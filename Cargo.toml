@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.4.16", features = ["derive"] }
 num = "0.4.1"
+num-bigint = "0.4.4"
