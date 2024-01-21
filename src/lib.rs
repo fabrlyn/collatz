@@ -30,7 +30,7 @@ impl Iterator for Collatz {
         let current = self.number?;
         self.number = next(current);
 
-        Some(current.into())
+        Some(current.get())
     }
 }
 
