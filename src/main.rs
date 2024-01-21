@@ -12,12 +12,23 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Command {
+    Count(Count),
     Iterate(Iterate),
+}
+
+#[derive(Debug, Args)]
+struct Count {
+    number: NonZeroU64,
 }
 
 #[derive(Debug, Args)]
 struct Iterate {
     number: NonZeroU64,
+}
+
+fn count(args: Count) {
+    let count = collatz::iterate(args.number).count();
+    println!("{count}")
 }
 
 fn iterate(args: Iterate) {
@@ -30,6 +41,7 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Command::Iterate(a) => iterate(a),
+        Command::Count(args) => count(args),
+        Command::Iterate(args) => iterate(args),
     }
 }
