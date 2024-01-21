@@ -1,4 +1,4 @@
-use std::num::NonZeroU64;
+use std::{num::NonZeroU64, ops::Sub};
 
 use clap::{command, Args, Parser, Subcommand};
 
@@ -13,7 +13,7 @@ struct Cli {
 #[derive(Debug, Subcommand)]
 enum Command {
     Count(Count),
-    Iterate(Iterate),
+    Steps(Steps),
 }
 
 #[derive(Debug, Args)]
@@ -22,17 +22,17 @@ struct Count {
 }
 
 #[derive(Debug, Args)]
-struct Iterate {
+struct Steps {
     number: NonZeroU64,
 }
 
 fn count(args: Count) {
-    let count = collatz::iterate(args.number).count();
+    let count = collatz::steps(args.number).count().sub(1);
     println!("{count}")
 }
 
-fn iterate(args: Iterate) {
-    collatz::iterate(args.number).for_each(|n| {
+fn steps(args: Steps) {
+    collatz::steps(args.number).for_each(|n| {
         println!("{n}");
     });
 }
@@ -42,6 +42,6 @@ fn main() {
 
     match cli.command {
         Command::Count(args) => count(args),
-        Command::Iterate(args) => iterate(args),
+        Command::Steps(args) => steps(args),
     }
 }

@@ -32,7 +32,7 @@ impl Iterator for Collatz {
     }
 }
 
-pub fn iterate(number: NonZeroU64) -> impl Iterator<Item = u64> {
+pub fn steps(number: NonZeroU64) -> impl Iterator<Item = u64> {
     Collatz {
         number: Some(number),
     }
