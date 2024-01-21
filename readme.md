@@ -7,4 +7,3 @@ Library and command line application for [Collatz conjecture](https://en.wikiped
 - Handle overflow of numbers
 - Handle different archs
 - Help texts for commands and flags
-
