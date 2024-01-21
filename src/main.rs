@@ -24,6 +24,8 @@ struct Count {
 #[derive(Debug, Args)]
 struct Steps {
     number: NonZeroU64,
+    #[arg(value_name = "enumerate", long = "enumerate")]
+    enumerate: bool,
 }
 
 fn count(args: Count) {
@@ -32,9 +34,17 @@ fn count(args: Count) {
 }
 
 fn steps(args: Steps) {
-    collatz::steps(args.number).for_each(|n| {
-        println!("{n}");
-    });
+    let steps = collatz::steps(args.number);
+
+    if args.enumerate {
+        steps.enumerate().for_each(|(step, number)| {
+            println!("{step}: {number}");
+        });
+    } else {
+        steps.for_each(|number| {
+            println!("{number}");
+        });
+    }
 }
 
 fn main() {
