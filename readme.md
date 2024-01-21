@@ -4,7 +4,9 @@ Library and command line application for [Collatz conjecture](https://en.wikiped
 
 # todo
 
-// TODO: Handle overflow of numbers
-// TODO: Handle different archs
-// TODO: extend cli command for iterate with enumeration
-// TODO: Check of-by-one error regarding enumeration and counting - starting at 1 counts as 0 steps
+- Handle overflow of numbers
+- Handle different archs
+- Extend cli command for iterate with enumeration
+- Check of-by-one error regarding enumeration and counting - starting at 1 counts as 0 steps
+- Help texts for commands and flags
+
