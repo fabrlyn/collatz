@@ -26,6 +26,10 @@ impl Number {
     }
 }
 
+/// Get the next number in the sequence.
+///
+/// Returns [None] if `number` is one(`1`).
+/// The end of the sequence has been reached.
 pub fn next(number: Number) -> Option<Number> {
     let number = number.value();
 
