@@ -2,12 +2,16 @@ use std::ops::{Add, Div, Mul};
 
 use num::{BigUint, Integer, One, Zero};
 
-/// A valid number within the Collatz conjecture - any positive integer
+/// A valid number in the Collatz sequence.
+///
+/// A positive integer.
 #[derive(Debug, Clone)]
 pub struct Number(BigUint);
 
 impl Number {
-    /// Create a new [Number]. Must be a postive integer.
+    /// Create a new [Number].
+    ///
+    /// Returns [None] if `number` is zero(`0`).
     pub fn new(number: BigUint) -> Option<Self> {
         if number.is_zero() {
             None
