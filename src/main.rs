@@ -12,8 +12,7 @@ fn parse_number(s: &str) -> Result<Number, String> {
 }
 
 #[derive(Debug, Parser)]
-#[command(name = "collatz")]
-#[command(about = "Computations surrounding Collatz conjecture")]
+#[command(about = "Collatz conjecture cli", name = "collatz", author = "fabrlyn")]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -26,16 +25,19 @@ enum Command {
 }
 
 #[derive(Debug, Args)]
+#[command(about = "Count and print total number of steps")]
 struct Count {
-    #[arg(value_parser = parse_number)]
+    #[arg(help = "A positive integer", value_parser = parse_number)]
     number: Number,
 }
 
 #[derive(Debug, Args)]
+#[command(about = "Print each step")]
 struct Steps {
-    #[arg(value_name = "enumerate", long = "enumerate")]
+    #[arg(help = "Prefix each step with step number", long = "enumerate")]
     enumerate: bool,
-    #[arg(value_parser = parse_number)]
+
+    #[arg(help = "A positive integer", value_parser = parse_number)]
     number: Number,
 }
 
@@ -59,9 +61,7 @@ fn steps(args: Steps) {
 }
 
 fn main() {
-    let cli = Cli::parse();
-
-    match cli.command {
+    match Cli::parse().command {
         Command::Count(args) => count(args),
         Command::Steps(args) => steps(args),
     }
