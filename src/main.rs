@@ -21,20 +21,20 @@ struct Cli {
 #[derive(Debug, Subcommand)]
 enum Command {
     Count(Count),
-    Steps(Steps),
+    Sequence(Sequence),
 }
 
 #[derive(Debug, Args)]
-#[command(about = "Count and print total number of steps")]
+#[command(about = "Count and print total number of steps in the sequence starting from <NUMBER>")]
 struct Count {
     #[arg(help = "A positive integer", value_parser = parse_number)]
     number: Number,
 }
 
 #[derive(Debug, Args)]
-#[command(about = "Print each step")]
-struct Steps {
-    #[arg(help = "Prefix each step with step number", long = "enumerate")]
+#[command(about = "Print each step in the sequence starting from <NUMBER>")]
+struct Sequence {
+    #[arg(help = "Prefix each step with the step number", long = "enumerate")]
     enumerate: bool,
 
     #[arg(help = "A positive integer", value_parser = parse_number)]
@@ -42,19 +42,19 @@ struct Steps {
 }
 
 fn count(args: Count) {
-    let count = collatz::steps(args.number).count().sub(1);
+    let count = collatz::sequence(args.number).count().sub(1);
     println!("{count}")
 }
 
-fn steps(args: Steps) {
-    let steps = collatz::steps(args.number);
+fn steps(args: Sequence) {
+    let sequence = collatz::sequence(args.number);
 
     if args.enumerate {
-        steps.enumerate().for_each(|(step, number)| {
+        sequence.enumerate().for_each(|(step, number)| {
             println!("{step}: {number}");
         });
     } else {
-        steps.for_each(|number| {
+        sequence.for_each(|number| {
             println!("{number}");
         });
     }
@@ -63,6 +63,6 @@ fn steps(args: Steps) {
 fn main() {
     match Cli::parse().command {
         Command::Count(args) => count(args),
-        Command::Steps(args) => steps(args),
+        Command::Sequence(args) => steps(args),
     }
 }

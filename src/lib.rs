@@ -46,11 +46,11 @@ pub fn next(number: Number) -> Option<Number> {
     Number::new(next)
 }
 
-struct Collatz {
+struct Sequence {
     number: Option<Number>,
 }
 
-impl Iterator for Collatz {
+impl Iterator for Sequence {
     type Item = BigUint;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -60,8 +60,9 @@ impl Iterator for Collatz {
     }
 }
 
-pub fn steps(number: Number) -> impl Iterator<Item = BigUint> {
-    Collatz {
+/// Get the sequence starting from `number`.
+pub fn sequence(number: Number) -> impl Iterator<Item = BigUint> {
+    Sequence {
         number: Some(number),
     }
 }
