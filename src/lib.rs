@@ -5,7 +5,7 @@ use num::{BigUint, Integer, One, Zero};
 /// A valid number in the Collatz sequence.
 ///
 /// A positive integer.
-#[derive(Debug, Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Number(BigUint);
 
 impl Number {
@@ -66,5 +66,20 @@ impl Iterator for Sequence {
 pub fn sequence(number: Number) -> impl Iterator<Item = BigUint> {
     Sequence {
         number: Some(number),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use pretty_assertions::assert_eq;
+    use rstest::rstest;
+
+    use super::Number;
+
+    #[rstest]
+    #[case(0, None)]
+    #[case(1, Some(Number(1u32.into())))]
+    fn new_number(#[case] input: u32, #[case] expected: Option<Number>) {
+        assert_eq!(Number::new(input), expected)
     }
 }
