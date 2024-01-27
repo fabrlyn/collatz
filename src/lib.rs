@@ -97,4 +97,11 @@ mod tests {
     fn next(#[case] input: Number, #[case] expected: Option<Number>) {
         assert_eq!(expected, super::next(input))
     }
+
+    #[rstest]
+    #[case(Number::new(1u32).unwrap(), vec![BigUint::from(1u32)])]
+    #[case(Number::new(4u32).unwrap(), vec![BigUint::from(4u32), BigUint::from(2u32), BigUint::from(1u32)])]
+    fn sequence(#[case] input: Number, #[case] expected: Vec<BigUint>) {
+        assert_eq!(expected, super::sequence(input).collect::<Vec<_>>())
+    }
 }
