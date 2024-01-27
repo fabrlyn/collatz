@@ -12,7 +12,9 @@ impl Number {
     /// Create a new [Number].
     ///
     /// Returns [None] if `number` is zero(`0`).
-    pub fn new(number: BigUint) -> Option<Self> {
+    pub fn new<N: Into<BigUint>>(number: N) -> Option<Self> {
+        let number = number.into();
+
         if number.is_zero() {
             None
         } else {
