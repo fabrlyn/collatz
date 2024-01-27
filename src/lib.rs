@@ -89,4 +89,12 @@ mod tests {
     fn get_number_value(#[case] number: Number, #[case] expected: BigUint) {
         assert_eq!(expected, number.value());
     }
+
+    #[rstest]
+    #[case(Number::new(1u32).unwrap(), None)]
+    #[case(Number::new(2u32).unwrap(), Number::new(1u32))]
+    #[case(Number::new(3u32).unwrap(), Number::new(10u32))]
+    fn next(#[case] input: Number, #[case] expected: Option<Number>) {
+        assert_eq!(expected, super::next(input))
+    }
 }
