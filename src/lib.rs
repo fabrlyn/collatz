@@ -78,16 +78,16 @@ mod tests {
     use super::Number;
 
     #[rstest]
+    #[case(Number::new(10u32).unwrap(), BigUint::from(10u32))]
+    fn get_number_value(#[case] number: Number, #[case] expected: BigUint) {
+        assert_eq!(expected, number.value());
+    }
+
+    #[rstest]
     #[case(0, None)]
     #[case(1, Some(Number(1u32.into())))]
     fn new_number(#[case] input: u32, #[case] expected: Option<Number>) {
         assert_eq!(Number::new(input), expected)
-    }
-
-    #[rstest]
-    #[case(Number::new(10u32).unwrap(), BigUint::from(10u32))]
-    fn get_number_value(#[case] number: Number, #[case] expected: BigUint) {
-        assert_eq!(expected, number.value());
     }
 
     #[rstest]
