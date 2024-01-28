@@ -4,7 +4,7 @@
 
 ## usage
 
-### print sequence
+**print sequence**
 
 ```sh
 $ collatz sequence 2
@@ -13,7 +13,7 @@ $ collatz sequence 2
 1
 ```
 
-### print enumerated sequence
+**print enumerated sequence**
 
 ```sh
 $ collatz sequence --enumerate 2
@@ -22,7 +22,7 @@ $ collatz sequence --enumerate 2
 2: 1
 ```
 
-### print step count
+**print step count**
 
 ```sh
 $ collatz count 2
