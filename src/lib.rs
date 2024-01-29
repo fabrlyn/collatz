@@ -63,9 +63,12 @@ impl Iterator for Sequence {
 }
 
 /// Get the sequence starting from `number`.
-pub fn sequence(number: Number) -> impl Iterator<Item = BigUint> {
+pub fn sequence<N>(number: N) -> impl Iterator<Item = BigUint>
+where
+    N: Into<Number>,
+{
     Sequence {
-        number: Some(number),
+        number: Some(number.into()),
     }
 }
 

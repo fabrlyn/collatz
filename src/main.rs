@@ -18,25 +18,31 @@ impl FromStr for NumberArg {
         BigUint::from_str(s.trim())
             .ok()
             .and_then(|number| Number::new(number))
-            .ok_or("Not a valid number, must be a positive integer".to_string())
+            .ok_or("Not a valid number, must be a positive integer.".to_string())
             .map(NumberArg)
     }
 }
 
+impl From<NumberArg> for Number {
+    fn from(value: NumberArg) -> Self {
+        value.0
+    }
+}
+
 #[derive(Clone, Debug)]
-enum ArgOrStdin<A> {
+enum StdinArg<A> {
     Arg(A),
     Stdin,
 }
 
-impl<A> ArgOrStdin<A> {
+impl<A> StdinArg<A> {
     fn into_or_parse_line<P, E>(self, parser: P) -> Result<Result<A, E>, io::Error>
     where
         P: Fn(&str) -> Result<A, E>,
     {
         match self {
-            ArgOrStdin::Arg(arg) => Ok(Ok(arg)),
-            ArgOrStdin::Stdin => {
+            StdinArg::Arg(arg) => Ok(Ok(arg)),
+            StdinArg::Stdin => {
                 // TODO: Can we detect if this is non-interactive?
                 let mut buffer = String::new();
                 stdin().read_line(&mut buffer)?;
@@ -46,7 +52,7 @@ impl<A> ArgOrStdin<A> {
     }
 }
 
-impl<A, E> ArgOrStdin<A>
+impl<A, E> StdinArg<A>
 where
     A: FromStr<Err = E>,
     E: Into<String>,
@@ -57,7 +63,21 @@ where
             input => A::from_str(input)
                 .map(Self::Arg)
                 .map_err(Into::into)
-                .map_err(|e| format!("{e}. Use '-' for piping from stdin.")),
+                .map_err(|e| format!("{e} Use '-' for piping from stdin.")),
+        }
+    }
+}
+
+trait GetOrExit<T> {
+    fn get_or_exit(self) -> T;
+}
+
+impl<T> GetOrExit<T> for Result<Result<T, String>, io::Error> {
+    fn get_or_exit(self) -> T {
+        match self {
+            Ok(Ok(value)) => value,
+            Ok(Err(error)) => clap::Error::raw(clap::error::ErrorKind::Format, error).exit(),
+            Err(error) => clap::Error::raw(clap::error::ErrorKind::Io, error).exit(),
         }
     }
 }
@@ -76,38 +96,37 @@ enum Command {
 }
 
 #[derive(Debug, Args)]
-#[command(about = "Count and print total number of steps in the sequence starting from <NUMBER>")]
+#[command(about = "Count and print total number of steps in the sequence starting from <NUMBER>.")]
 struct Count {
-    #[arg(help = "A positive integer", value_parser = ArgOrStdin::<NumberArg>::parse)]
-    number: ArgOrStdin<NumberArg>,
+    #[arg(help = "A positive integer. Use '-' for piping from stdin.", value_parser = StdinArg::<NumberArg>::parse)]
+    number: StdinArg<NumberArg>,
 }
 
 #[derive(Debug, Args)]
-#[command(about = "Print each step in the sequence starting from <NUMBER>")]
+#[command(about = "Print each step in the sequence starting from <NUMBER>.")]
 struct Sequence {
-    #[arg(help = "Prefix each step with the step number", long = "enumerate")]
+    #[arg(help = "Prefix each step with the step number.", long = "enumerate")]
     enumerate: bool,
 
-    #[arg(help = "A positive integer", value_parser = ArgOrStdin::<NumberArg>::parse)]
-    number: ArgOrStdin<NumberArg>,
+    #[arg(help = "A positive integer. Use '-' for piping from stdin.", value_parser = StdinArg::<NumberArg>::parse)]
+    number: StdinArg<NumberArg>,
 }
 
 fn count(args: Count) {
-    let number = match args.number.into_or_parse_line(NumberArg::from_str) {
-        Ok(Ok(number)) => number.0,
-        Ok(Err(error)) => clap::Error::raw(clap::error::ErrorKind::Format, error).exit(),
-        Err(error) => clap::Error::raw(clap::error::ErrorKind::Io, error).exit(),
-    };
+    let number = args
+        .number
+        .into_or_parse_line(NumberArg::from_str)
+        .get_or_exit();
 
     let count = collatz::sequence(number).count().sub(1);
     println!("{count}")
 }
 
 fn steps(args: Sequence) {
-    let number = match args.number {
-        ArgOrStdin::Arg(number) => number.0,
-        ArgOrStdin::Stdin => todo!(),
-    };
+    let number = args
+        .number
+        .into_or_parse_line(NumberArg::from_str)
+        .get_or_exit();
 
     let sequence = collatz::sequence(number);
 
