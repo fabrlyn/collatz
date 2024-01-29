@@ -2,6 +2,8 @@ use std::ops::{Add, Div, Mul};
 
 use num::{BigUint, Integer, One, Zero};
 
+pub use num;
+
 /// A valid number in the Collatz sequence.
 ///
 /// A positive integer.

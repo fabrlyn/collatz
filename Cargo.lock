@@ -154,8 +154,6 @@ dependencies = [
  "assert_cmd",
  "clap",
  "collatz",
- "num",
- "num-bigint",
  "pretty_assertions",
  "rstest",
 ]

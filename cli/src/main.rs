@@ -5,8 +5,7 @@ use std::{
 };
 
 use clap::{command, Args, Parser, Subcommand};
-use collatz::Number;
-use num::BigUint;
+use collatz::{num::BigUint, Number};
 
 #[derive(Clone, Debug)]
 struct NumberArg(Number);
