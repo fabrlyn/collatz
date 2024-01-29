@@ -16,6 +16,17 @@ fn count() {
 }
 
 #[rstest]
+fn count_stdin() {
+    command()
+        .arg("count")
+        .arg("-")
+        .write_stdin("10")
+        .assert()
+        .success()
+        .stdout("6\n");
+}
+
+#[rstest]
 fn enumerated_sequence() {
     command()
         .arg("sequence")
@@ -31,6 +42,17 @@ fn sequence() {
     command()
         .arg("sequence")
         .arg("4")
+        .assert()
+        .success()
+        .stdout("4\n2\n1\n");
+}
+
+#[rstest]
+fn sequence_stdin() {
+    command()
+        .arg("sequence")
+        .arg("-")
+        .write_stdin("4")
         .assert()
         .success()
         .stdout("4\n2\n1\n");
