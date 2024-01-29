@@ -16,7 +16,7 @@ impl FromStr for NumberArg {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         BigUint::from_str(s.trim())
             .ok()
-            .and_then(|number| Number::new(number))
+            .and_then(Number::new)
             .ok_or("Not a valid number, must be a positive integer.".to_string())
             .map(NumberArg)
     }
@@ -88,7 +88,7 @@ trait WithNewLine {
 
 impl WithNewLine for String {
     fn with_new_line(self) -> Self {
-        if self.ends_with("\n") {
+        if self.ends_with('\n') {
             self
         } else {
             format!("{self}\n")
