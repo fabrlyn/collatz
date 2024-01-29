@@ -43,7 +43,6 @@ impl<A> StdinArg<A> {
         match self {
             StdinArg::Arg(arg) => Ok(Ok(arg)),
             StdinArg::Stdin => {
-                // TODO: Can we detect if this is non-interactive?
                 let mut buffer = String::new();
                 stdin().read_line(&mut buffer)?;
                 Ok(parser(&buffer))
