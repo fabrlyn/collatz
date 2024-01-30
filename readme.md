@@ -10,6 +10,7 @@
 ### prerequisites
 
 - [cargo llvm-cov](https://github.com/taiki-e/cargo-llvm-cov) - test coverage
+- [gnuplot](http://www.gnuplot.info/) - plotter for benchmarking
 - [upx](https://github.com/upx/upx) - binary packer
 
 ### test
@@ -30,6 +31,12 @@ $ cargo llvm-cov test
 
 ```sh
 $ cargo llvm-cov test --open
+```
+
+### benchmark
+
+```sh
+$ cargo bench -- --verbose 
 ```
 
 ### install
