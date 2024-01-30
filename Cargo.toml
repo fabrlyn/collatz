@@ -4,9 +4,6 @@ members = ["cli", "collatz"]
 
 resolver = "2"
 
-[profile.bench]
-debug = true
-
 [profile.release]
 codegen-units = 1
 lto = true
