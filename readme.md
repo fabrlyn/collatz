@@ -35,13 +35,13 @@ $ cargo llvm-cov test --open
 
 ### benchmark
 
-**Run benchmark**
+**run benchmark**
 
 ```sh
 $ cargo bench -- --verbose 
 ```
 
-**View graphs**
+**view graphs**
 
 ```sh
 $ open target/criterion/report/index.html
