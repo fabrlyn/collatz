@@ -7,8 +7,10 @@ use std::{
 use clap::{command, Args, Parser, Subcommand};
 use collatz::{num::BigUint, Number};
 
-use crate::{arg::{NumberArg, StdinArg}, util::GetOrExit};
-
+use crate::{
+    arg::{NumberArg, StdinArg},
+    util::GetOrExit,
+};
 
 #[derive(Debug, Parser)]
 #[command(about = "Collatz conjecture cli", name = "collatz", author = "fabrlyn")]
@@ -74,5 +76,4 @@ pub fn run() {
         Command::Count(args) => count(args),
         Command::Sequence(args) => steps(args),
     }
-    
 }
