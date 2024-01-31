@@ -1,11 +1,10 @@
 use std::{
-    io::{self, stdin},
     ops::Sub,
     str::FromStr,
 };
 
 use clap::{command, Args, Parser, Subcommand};
-use collatz::{num::BigUint, Number};
+
 
 use crate::{
     arg::{NumberArg, StdinArg},
