@@ -5,7 +5,6 @@ use std::{
 
 use clap::{command, Args, Parser, Subcommand};
 
-
 use crate::{
     arg::{NumberArg, StdinArg},
     util::GetOrExit,
